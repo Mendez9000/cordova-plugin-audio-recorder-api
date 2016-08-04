@@ -27,7 +27,6 @@
     }
 
     NSMutableDictionary *recordSettings = [[NSMutableDictionary alloc] init];
-    //[recordSettings setObject:[NSNumber numberWithInt: kAudioFormatMPEG4AAC] forKey: AVFormatIDKey];
     [recordSettings setObject:[NSNumber numberWithInt: kAudioFormatULaw] forKey: AVFormatIDKey];
     [recordSettings setObject:[NSNumber numberWithFloat:8000.0] forKey: AVSampleRateKey];
     [recordSettings setObject:[NSNumber numberWithInt:1] forKey:AVNumberOfChannelsKey];
@@ -37,7 +36,6 @@
 
     // Create a new dated file
     NSString *uuid = [[NSUUID UUID] UUIDString];
-    //recorderFilePath = [NSString stringWithFormat:@"%@/%@.m4a", RECORDINGS_FOLDER, uuid];
     recorderFilePath = [NSString stringWithFormat:@"%@/%@.ulaw", RECORDINGS_FOLDER, uuid];
     NSLog(@"recording file path: %@", recorderFilePath);
 

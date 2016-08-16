@@ -33,7 +33,7 @@ public class AudioRecorderAPI extends CordovaPlugin {
     }
     if (action.equals("record")) {
       outputFile = context.getFilesDir().getAbsoluteFile() + "/"
-        + UUID.randomUUID().toString() + ".wav";
+        + UUID.randomUUID().toString() + ".mp3";
     
       myRecorder = new MediaRecorder();
       myRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);

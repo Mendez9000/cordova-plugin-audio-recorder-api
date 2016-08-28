@@ -166,7 +166,7 @@ private void writeAudioDataToFile() {
 
     try {
         os.close();
-         error+= "..ERROR2";
+         error+= "..PASO5";
     } catch (IOException e) {
         error+= "..ERROR2";
         e.printStackTrace();

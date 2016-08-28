@@ -43,6 +43,7 @@ public class AudioRecorderAPI extends CordovaPlugin {
   private String outputFile=null;
   private String outputFileTmp=null;
   private String error= "";
+  private int bufferSize = 0;
 
   @Override
   public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
@@ -55,6 +56,9 @@ public class AudioRecorderAPI extends CordovaPlugin {
       seconds = 7;
     }
     if (action.equals("record")) {
+       bufferSize = AudioRecord.getMinBufferSize
+              (RECORDER_SAMPLERATE,RECORDER_CHANNELS,RECORDER_AUDIO_ENCODING)*3;
+
         outputFileTmp = context.getFilesDir().getAbsoluteFile() + "/" + UUID.randomUUID().toString() + ".pcm";
         outputFile = context.getFilesDir().getAbsoluteFile() + "/" + UUID.randomUUID().toString() + ".wav";
         recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,

@@ -62,7 +62,9 @@ public class AudioRecorderAPI extends CordovaPlugin {
          
         cordova.getThreadPool().execute(new Runnable() {
           public void run() {
-           writeAudioDataToFile(context);
+            String outputFile = context.getFilesDir().getAbsoluteFile() + "/"
+        + UUID.randomUUID().toString() + ".pcm";
+           writeAudioDataToFile(outputFile);
           }
         });
          
@@ -126,9 +128,8 @@ public class AudioRecorderAPI extends CordovaPlugin {
 }
   
   
-private void writeAudioDataToFile(Context context) {
-    outputFile = context.getFilesDir().getAbsoluteFile() + "/"
-        + UUID.randomUUID().toString() + ".pcm";
+private void writeAudioDataToFile(String outputFile) {
+    
     short sData[] = new short[BufferElements2Rec];
 
     FileOutputStream os = null;

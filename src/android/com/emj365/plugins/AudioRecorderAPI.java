@@ -41,10 +41,14 @@ public class AudioRecorderAPI extends CordovaPlugin {
   private String outputFile;
   private CountDownTimer countDowntimer;
   private boolean isRecording = false;
+  private String outputFile=null;
 
   @Override
   public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
     Context context = cordova.getActivity().getApplicationContext();
+    
+      outputFile = context.getFilesDir().getAbsoluteFile() + "/" + UUID.randomUUID().toString() + ".pcm";
+    
     Integer seconds;
     if (args.length() >= 1) {
       seconds = args.getInt(0);
@@ -62,8 +66,7 @@ public class AudioRecorderAPI extends CordovaPlugin {
          
         cordova.getThreadPool().execute(new Runnable() {
           public void run() {
-            String outputFile = context.getFilesDir().getAbsoluteFile() + "/" + UUID.randomUUID().toString() + ".pcm";
-           writeAudioDataToFile(outputFile);
+           writeAudioDataToFile();
           }
         });
          
@@ -127,7 +130,7 @@ public class AudioRecorderAPI extends CordovaPlugin {
 }
   
   
-private void writeAudioDataToFile(String outputFile) {
+private void writeAudioDataToFile() {
     
     short sData[] = new short[BufferElements2Rec];
 

@@ -41,6 +41,7 @@ public class AudioRecorderAPI extends CordovaPlugin {
   private CountDownTimer countDowntimer;
   private boolean isRecording = false;
   private String outputFile=null;
+  private String error= "";
 
   @Override
   public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
@@ -110,7 +111,8 @@ public class AudioRecorderAPI extends CordovaPlugin {
     
     cordova.getThreadPool().execute(new Runnable() {
       public void run() {
-        callbackContext.success(outputFile);
+        error+= "..PASO-2";
+        callbackContext.success(outputFile+error);
       }
     });
   }
@@ -130,15 +132,18 @@ public class AudioRecorderAPI extends CordovaPlugin {
   
   
 private void writeAudioDataToFile() {
-    
+      error+= "..PASO-1";
     short sData[] = new short[BufferElements2Rec];
 
     FileOutputStream os = null;
     try {
+       error+= "..PASO0";
         os = new FileOutputStream(outputFile);
     } catch (FileNotFoundException e) {
+       error+= "..ERROR0";
         e.printStackTrace();
     }
+     error+= "..PASO1";
 
     while (isRecording) {
         // gets the voice output from microphone to byte format
@@ -152,14 +157,18 @@ private void writeAudioDataToFile() {
             byte bData[] = short2byte(sData);
 
             os.write(bData, 0, BufferElements2Rec * BytesPerElement);
+            
         } catch (IOException e) {
+          error+= "..ERROR1";
             e.printStackTrace();
         }
     }
 
     try {
         os.close();
+         error+= "..ERROR2";
     } catch (IOException e) {
+        error+= "..ERROR2";
         e.printStackTrace();
     }
 }

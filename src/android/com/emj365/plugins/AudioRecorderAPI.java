@@ -5,9 +5,9 @@ import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.PluginResult;
 import org.json.JSONArray;
 import org.json.JSONException;
-import android.media.MediaRecorder;
-import android.media.MediaPlayer;
+import android.media.AudioFormat;
 import android.media.AudioManager;
+import android.media.AudioRecord;
 import android.os.CountDownTimer;
 import android.os.Environment;
 import android.content.Context;
@@ -16,11 +16,30 @@ import java.io.FileInputStream;
 import java.io.File;
 import java.io.IOException;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+
+
+
 public class AudioRecorderAPI extends CordovaPlugin {
 
-  private MediaRecorder myRecorder;
+  private static final int RECORDER_SAMPLERATE = 8000;
+  private static final int RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO;
+  private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
+  private int BufferElements2Rec = 1024;
+  private int BytesPerElement = 2;
+  private AudioRecord recorder = null;
+
   private String outputFile;
   private CountDownTimer countDowntimer;
+  private boolean isRecording = false;
 
   @Override
   public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
@@ -32,21 +51,13 @@ public class AudioRecorderAPI extends CordovaPlugin {
       seconds = 7;
     }
     if (action.equals("record")) {
-      outputFile = context.getFilesDir().getAbsoluteFile() + "/"
-        + UUID.randomUUID().toString() + ".mp3";
-    
-      myRecorder = new MediaRecorder();
-      myRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-      myRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-      myRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
-      myRecorder.setAudioSamplingRate(44100);
-      myRecorder.setAudioChannels(1);
-      myRecorder.setAudioEncodingBitRate(32000);
-      myRecorder.setOutputFile(outputFile);
-      
+        recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
+            RECORDER_SAMPLERATE, RECORDER_CHANNELS,
+            RECORDER_AUDIO_ENCODING, BufferElements2Rec * BytesPerElement);
       try {
-        myRecorder.prepare();
-        myRecorder.start();
+         recorder.startRecording();
+         isRecording= true;
+         writeAudioDataToFile();
       } catch (final Exception e) {
         cordova.getThreadPool().execute(new Runnable() {
           public void run() {
@@ -72,48 +83,74 @@ public class AudioRecorderAPI extends CordovaPlugin {
       return true;
     }
 
-    if (action.equals("playback")) {
-      MediaPlayer mp = new MediaPlayer();
-      mp.setAudioStreamType(AudioManager.STREAM_MUSIC);
-      try {
-        FileInputStream fis = new FileInputStream(new File(outputFile));
-        mp.setDataSource(fis.getFD());
-      } catch (IllegalArgumentException e) {
-        e.printStackTrace();
-      } catch (SecurityException e) {
-        e.printStackTrace();
-      } catch (IllegalStateException e) {
-        e.printStackTrace();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-      try {
-        mp.prepare();
-      } catch (IllegalStateException e) {
-        e.printStackTrace();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-      mp.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-        public void onCompletion(MediaPlayer mp) {
-          callbackContext.success("playbackComplete");
-        }
-      });
-      mp.start();
-      return true;
-    }
-
     return false;
   }
 
   private void stopRecord(final CallbackContext callbackContext) {
-    myRecorder.stop();
-    myRecorder.release();
+      if (recorder!=null) {
+        recorder.stop();
+        recorder.release();
+        recorder = null;
+    }
+    isRecording = false;|
+    
     cordova.getThreadPool().execute(new Runnable() {
       public void run() {
         callbackContext.success(outputFile);
       }
     });
   }
+  
+  private byte[] short2byte(short[] sData) {
+    int shortArrsize = sData.length;
+    byte[] bytes = new byte[shortArrsize * 2];
 
+    for (int i = 0; i < shortArrsize; i++) {
+        bytes[i * 2] = (byte) (sData[i] & 0x00FF);
+        bytes[(i * 2) + 1] = (byte) (sData[i] >> 8);
+        sData[i] = 0;
+    }
+    return bytes;
+
+}
+  
+  
+private void writeAudioDataToFile() {
+    outputFile = context.getFilesDir().getAbsoluteFile() + "/"
+        + UUID.randomUUID().toString() + ".pcm";
+    short sData[] = new short[BufferElements2Rec];
+
+    FileOutputStream os = null;
+    try {
+        os = new FileOutputStream(outputFile);
+    } catch (FileNotFoundException e) {
+        e.printStackTrace();
+    }
+
+    while (isRecording) {
+        // gets the voice output from microphone to byte format
+
+        recorder.read(sData, 0, BufferElements2Rec);
+        System.out.println("Short wirting to file" + sData.toString());
+        try {
+            // // writes the data to file from buffer
+            // // stores the voice buffer
+
+            byte bData[] = short2byte(sData);
+
+            os.write(bData, 0, BufferElements2Rec * BytesPerElement);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    try {
+        os.close();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+  
+  
+  
 }

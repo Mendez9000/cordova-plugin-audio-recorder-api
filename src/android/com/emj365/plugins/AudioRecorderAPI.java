@@ -38,7 +38,6 @@ public class AudioRecorderAPI extends CordovaPlugin {
   private int BytesPerElement = 2;
   private AudioRecord recorder = null;
 
-  private String outputFile;
   private CountDownTimer countDowntimer;
   private boolean isRecording = false;
   private String outputFile=null;

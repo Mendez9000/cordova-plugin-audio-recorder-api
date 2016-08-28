@@ -58,7 +58,17 @@ public class AudioRecorderAPI extends CordovaPlugin {
       try {
          recorder.startRecording();
          isRecording= true;
-         writeAudioDataToFile(context);
+         
+         
+        cordova.getThreadPool().execute(new Runnable() {
+          public void run() {
+           writeAudioDataToFile(context);
+          }
+        });
+         
+         
+         
+        
       } catch (final Exception e) {
         cordova.getThreadPool().execute(new Runnable() {
           public void run() {

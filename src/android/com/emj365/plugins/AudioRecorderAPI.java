@@ -92,7 +92,7 @@ public class AudioRecorderAPI extends CordovaPlugin {
         recorder.release();
         recorder = null;
     }
-    isRecording = false;|
+    isRecording = false;
     
     cordova.getThreadPool().execute(new Runnable() {
       public void run() {

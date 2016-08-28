@@ -47,15 +47,14 @@ public class AudioRecorderAPI extends CordovaPlugin {
   public boolean execute(String action, JSONArray args, final CallbackContext callbackContext) throws JSONException {
     Context context = cordova.getActivity().getApplicationContext();
     
-      outputFile = context.getFilesDir().getAbsoluteFile() + "/" + UUID.randomUUID().toString() + ".pcm";
-    
-    Integer seconds;
+   Integer seconds;
     if (args.length() >= 1) {
       seconds = args.getInt(0);
     } else {
       seconds = 7;
     }
     if (action.equals("record")) {
+        outputFile = context.getFilesDir().getAbsoluteFile() + "/" + UUID.randomUUID().toString() + ".pcm";
         recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
             RECORDER_SAMPLERATE, RECORDER_CHANNELS,
             RECORDER_AUDIO_ENCODING, BufferElements2Rec * BytesPerElement);
@@ -111,8 +110,8 @@ public class AudioRecorderAPI extends CordovaPlugin {
     
     cordova.getThreadPool().execute(new Runnable() {
       public void run() {
-        error+= "..PASO-2";
-        callbackContext.success(outputFile+error);
+        error+= "..PASO-10";
+        callbackContext.success(outputFile);
       }
     });
   }
@@ -132,18 +131,18 @@ public class AudioRecorderAPI extends CordovaPlugin {
   
   
 private void writeAudioDataToFile() {
-      error+= "..PASO-1";
+      error+= "..PASO-0";
     short sData[] = new short[BufferElements2Rec];
 
     FileOutputStream os = null;
     try {
-       error+= "..PASO0";
+       error+= "..PASO2";
         os = new FileOutputStream(outputFile);
     } catch (FileNotFoundException e) {
        error+= "..ERROR0";
         e.printStackTrace();
     }
-     error+= "..PASO1";
+     error+= "..PASO3";
 
     while (isRecording) {
         // gets the voice output from microphone to byte format
@@ -166,13 +165,10 @@ private void writeAudioDataToFile() {
 
     try {
         os.close();
-         error+= "..PASO5";
+         error+= "..PASO4";
     } catch (IOException e) {
         error+= "..ERROR2";
         e.printStackTrace();
     }
-}
-  
-  
-  
+  }
 }

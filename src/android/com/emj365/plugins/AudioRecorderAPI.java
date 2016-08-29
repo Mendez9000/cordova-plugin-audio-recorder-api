@@ -32,7 +32,7 @@ import android.media.MediaRecorder;
 public class AudioRecorderAPI extends CordovaPlugin {
   private static final int RECORDER_BPP = 16;
   private static final int RECORDER_SAMPLERATE = 8000;
-  private static final int RECORDER_CHANNELS = AudioFormat.CHANNEL_CONFIGURATION_MONO;
+  private static final int RECORDER_CHANNELS = AudioFormat.CHANNEL_CONFIGURATION_STEREO;
   private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
   private int BufferElements2Rec = 1024;
   private int BytesPerElement = 2;

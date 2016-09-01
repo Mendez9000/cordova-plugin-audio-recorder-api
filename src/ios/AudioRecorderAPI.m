@@ -31,7 +31,7 @@
     [recordSettings setObject:[NSNumber numberWithFloat:44100] forKey: AVSampleRateKey];
     [recordSettings setObject:[NSNumber numberWithInt:1] forKey:AVNumberOfChannelsKey];
     [recordSettings setObject:[NSNumber numberWithInt:32000] forKey:AVEncoderBitRateKey];
-    [recordSettings setObject:[NSNumber numberWithInt:16] forKey:AVLinearPCMBitDepthKey];
+    [recordSettings setObject:[NSNumber numberWithInt:8] forKey:AVLinearPCMBitDepthKey];
     [recordSettings setObject:[NSNumber numberWithInt: AVAudioQualityMin] forKey: AVEncoderAudioQualityKey];
     
     
@@ -44,7 +44,7 @@
 
     // Create a new dated file
     NSString *uuid = [[NSUUID UUID] UUIDString];
-    recorderFilePath = [NSString stringWithFormat:@"%@/%@.m4a", RECORDINGS_FOLDER, uuid];
+    recorderFilePath = [NSString stringWithFormat:@"%@/%@.mp3", RECORDINGS_FOLDER, uuid];
     NSLog(@"recording file path: %@", recorderFilePath);
 
     NSURL *url = [NSURL fileURLWithPath:recorderFilePath];

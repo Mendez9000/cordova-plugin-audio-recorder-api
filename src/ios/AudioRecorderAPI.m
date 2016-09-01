@@ -26,13 +26,13 @@
       NSLog(@"%@ %d %@", [err domain], [err code], [[err userInfo] description]);
     }
 
-      NSMutableDictionary *recordSettings = [[NSMutableDictionary alloc] init];
+    NSMutableDictionary *recordSettings = [[NSMutableDictionary alloc] init];
     [recordSettings setObject:[NSNumber numberWithInt: kAudioFormatULaw] forKey: AVFormatIDKey];
     [recordSettings setObject:[NSNumber numberWithFloat:8000.0] forKey: AVSampleRateKey];
     [recordSettings setObject:[NSNumber numberWithInt:1] forKey:AVNumberOfChannelsKey];
     [recordSettings setObject:[NSNumber numberWithInt:12000] forKey:AVEncoderBitRateKey];
     [recordSettings setObject:[NSNumber numberWithInt:8] forKey:AVLinearPCMBitDepthKey];
-    [recordSettings setObject:[NSNumber numberWithInt: AVAudioQualityMin] forKey: AVEncoderAudioQualityKey];
+    [recordSettings setObject:[NSNumber numberWithInt: AVAudioQualityLow] forKey: AVEncoderAudioQualityKey];
     
     // Create a new dated file
     NSString *uuid = [[NSUUID UUID] UUIDString];

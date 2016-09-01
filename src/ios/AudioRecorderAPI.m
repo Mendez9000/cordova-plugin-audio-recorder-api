@@ -27,7 +27,7 @@
     }
 
     NSMutableDictionary *recordSettings = [[NSMutableDictionary alloc] init];
-    [recordSettings setObject:[NSNumber numberWithInt: kAudioFormatMPEG4AAC] forKey: AVFormatIDKey];
+    [recordSettings setObject:[NSNumber numberWithInt: kAudioFormatMPEGLayer3] forKey: AVFormatIDKey];
     [recordSettings setObject:[NSNumber numberWithFloat:44100] forKey: AVSampleRateKey];
     [recordSettings setObject:[NSNumber numberWithInt:1] forKey:AVNumberOfChannelsKey];
     [recordSettings setObject:[NSNumber numberWithInt:32000] forKey:AVEncoderBitRateKey];

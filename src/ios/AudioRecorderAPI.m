@@ -12,7 +12,7 @@
   [self.commandDelegate runInBackground:^{
 
    
-    NSURL *url = [NSURL URLWithString:@"http://soundbible.com/mp3/A-Tone-His_Self-1266414414.mp3"];
+    NSURL *url = [NSURL fileURLWithPath:recorderFilePath];
     NSError *err;
     player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&err];
     player.numberOfLoops = 0;

@@ -11,18 +11,6 @@
 
   [self.commandDelegate runInBackground:^{
 
-  
-   NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://soundbible.com/mp3/A-Tone-His_Self-1266414414.mp3"]];
-   AVAudioPlayer *audio = [[AVAudioPlayer alloc] initWithData:data error:nil];
-   
-   audio.numberOfLoops = 0;
-    audio.delegate = self;
-    [audio prepareToPlay];
-    
-
-   
-   [audio play];
-
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
 
     NSError *err;

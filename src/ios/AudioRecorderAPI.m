@@ -11,14 +11,9 @@
 
   [self.commandDelegate runInBackground:^{
 
-   
-    NSURL *url = [NSURL fileURLWithPath:"dale.ulaw"];
-    NSError *err;
-    player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&err];
-    player.numberOfLoops = 0;
-    player.delegate = self;
-    [player prepareToPlay];
-    [player play];
+NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://soundbible.com/mp3/A-Tone-His_Self-1266414414.mp3";
+AVAudioPlayer * theAudio = [[AVAudioPlayer alloc] initWithData:data error:NULL];
+[theAudio play];
     
 
 

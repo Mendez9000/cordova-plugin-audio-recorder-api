@@ -10,14 +10,10 @@
   duration = [_command.arguments objectAtIndex:0];
 
   [self.commandDelegate runInBackground:^{
-  
-   
-    
-    
-
 
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
 
+    NSError *err;
     [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:&err];
     if (err)
     {

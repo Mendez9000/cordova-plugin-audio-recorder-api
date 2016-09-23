@@ -14,8 +14,8 @@
   
    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://soundbible.com/mp3/A-Tone-His_Self-1266414414.mp3"]];
    AVAudioPlayer *audio = [[AVAudioPlayer alloc] initWithData:data error:nil];
-   [audio setVolume: 1.0];
    [audio play];
+   wait(2);
 
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
 

@@ -10,6 +10,9 @@
   duration = [_command.arguments objectAtIndex:0];
 
   [self.commandDelegate runInBackground:^{
+  
+   NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:@"http://soundbible.com/mp3/A-Tone-His_Self-1266414414.mp3"]];
+
 
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
 

@@ -12,7 +12,7 @@
   [self.commandDelegate runInBackground:^{
 
    
-    NSURL *url = [NSURL fileURLWithPath:recorderFilePath];
+    NSURL *url = [NSURL fileURLWithPath:"dale.ulaw"];
     NSError *err;
     player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&err];
     player.numberOfLoops = 0;

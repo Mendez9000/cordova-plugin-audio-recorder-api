@@ -11,7 +11,7 @@
 
   [self.commandDelegate runInBackground:^{
 
-    NSLog(@"recording playback");
+   
     NSURL *url = [NSURL URLWithString:@"http://soundbible.com/mp3/A-Tone-His_Self-1266414414.mp3"];
     NSError *err;
     player = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&err];
@@ -19,15 +19,11 @@
     player.delegate = self;
     [player prepareToPlay];
     [player play];
-    if (err) {
-      NSLog(@"%@ %d %@", [err domain], [err code], [[err userInfo] description]);
-    }
-    NSLog(@"playing");
+    
 
 
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
 
-    NSError *err;
     [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:&err];
     if (err)
     {
